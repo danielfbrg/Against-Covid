@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>
+			Map Covid-19
+		</title>
+		<!-- Leaflet -->
+		<link rel="stylesheet" href="lib/leaflet/leaflet.css"/>
+		<script src="lib/leaflet/leaflet.js"></script>	
+		<script src="data/separado.geojson"></script>
+		<style type="text/css">
+			#map {
+                
+                margin: auto;
+                height: 550px;
+				width: 600px;
+                    
+				 }
+			.legend {background: white;line-height: 1.5em}
+			.legend i { width: 5em; float: left}
+        </style>
+        <style>
+            .myDiv {
+            background-color: rgb(37, 37, 37);    
+            text-align: center;
+            }
+
+                     
+        </style>
+        
+    </head>
+    <body style="background-color:rgb(37, 37, 37);">
+
+    <div class="myDiv">
+        <h1 style="color: white;">Casos Covid-19 - Estado do Rio de Janeiro</h1>
+        <h2 style="color: white;"> Municípios agrupados em Microrregiões:</h2>
+        <h3 style="color: whitesmoke;">Bacia de São João, Campos dos Goytacazes, Lagos e Macaé</h3>
+
+        <div id="map"></div>
+    </div> 
+        
+    <div>   
+        <script>
+            var mescladoLayer;
+
+
+/*Função que Destaca o Polígono */
+function highlightFeature(e){
+    var layer = e.target;
+    layer.setStyle(
+        {
+        weight: 4,
+        color: '#e6e0db',
+        fillColor: 'white',
+        fillOpacity: 0
+        }
+    );
+    if(!L.Browser.ie && !L.Browser.opera){
+		layer.bringToFront();
+	}
+}
+
+/*Função Reseta HighLigth */
+function resetHighlight(e){
+		mescladoLayer.resetStyle(e.target);
+}
+
+/*Função Click gera Zoom para Municípo Clicado */
+function zoomToFeature(e){
+		map.fitBounds(e.target.getBounds());
+        var layer = e.target;
+
+        
+    layer.setStyle(
+        {
+        weight: 4,
+        color: '#e6e0db',
+        fillColor: 'red',
+        fillOpacity: 1
+        }
+    );
+    if(!L.Browser.ie && !L.Browser.opera){
+		layer.bringToFront();
+	}
+}
+
+/*Função Interação com Munícipio */
+function countriesOnEachFeature(feature, layer){
+        //bindTooltip Comando referente ao label com mouseover
+        //NM_MUN é o Identificador da tabela de atribudos dos mapas referente ao nome do município
+        layer.bindTooltip(feature.properties.NM_MUN, {noHide : true});
+
+        layer.on(
+			{
+				mouseover: highlightFeature,
+				mouseout: resetHighlight,
+				click : zoomToFeature 
+		    }
+	);
+}
+
+/*Função que Define cores das Camadas */
+function mescladoStyle(feature){ 
+				return{
+					fillColor : getmescladoColor(feature.properties.NM_MICRO),
+					weight: 2.2,
+					opacity: 1,
+					color: '#005AA8',
+					dashArray: 3,
+					fillOpacity: 0.7,
+				}  
+			}
+
+/*Função que Define Cores pelo tamanho da Área(podemos mudar para número de casos) 
+    Estou usando valores fornecidos pela Tabela de atributos(NM_MICRO), como usar da API ?
+*/
+function getmescladoColor(NM_MICRO){
+                if(NM_MICRO == 'Macaé'){
+                    return '#87cefa';
+                }else if(NM_MICRO == 'Lagos'){
+                    return  'blue';
+                }else if(NM_MICRO == 'Campos dos Goytacazes'){
+                    return '#c1c1c1';
+                }else if(NM_MICRO == 'Bacia de São João'){
+                    return '#43bc7e';
+                }else{
+                    return 'none';
+                }
+            }
+
+
+
+            /* Controle do mapa */
+            var map = L.map('map').setView([-22.0452, -42.6734], 7.8);
+            mescladoLayer = L.geoJson(
+                    mesclado,
+                    {
+                        style : mescladoStyle,
+                        onEachFeature: countriesOnEachFeature                    
+                    }
+            ).addTo(map);
+            map.fitBounds(mescladoLayer.getBounds());
+
+            /*Adiciona Basemap*/
+            var Stadia_AlidadeSmoothDark = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
+	        maxZoom: 20,
+	        attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+            });
+            map.addLayer(Stadia_AlidadeSmoothDark);
+        
+            /* Controle da Legenda */
+            var legend = L.control({position: 'bottomright'});
+			legend.onAdd = function(map){
+				var div = L.DomUtil.create('div', 'legend')
+				var labels = [
+                    "Bacia de São João",
+					"Campos dos Goytacazes",
+                    "Lagos",
+                    "Macaé"
+				];
+				var grades = ['Bacia de São João', 'Campos dos Goytacazes', 'Lagos', 'Macaé'];
+				div.innerHTML = '<div><b>Microrregiões do Estado RJ</b></div>'; 
+				for(var i = 0; i < grades.length; i++){
+					div.innerHTML += '<i style="background:'
+					+ getmescladoColor(grades[i]) + '">&nbsp;&nbsp;</i>&nbsp;&nbsp;'
+					+ labels[i] + '<br />';	
+				}
+				return div;
+			}
+			legend.addTo(map);
+        
+        </script>
+    </div>
+
+    <footer>
+        <p style="text-align:center; color: whitesmoke;">@2020<br>
+        <a style="color: rgb(38, 147, 190);" href="mailto:danielfbrg@gmail.com">danielfbrg@gmail.com</a></p>
+    </footer>
+
+    </body>
+</html>
