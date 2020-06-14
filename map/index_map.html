@@ -14,11 +14,11 @@
 			#map {
                 
                 margin: auto;
-                height: 550px;
+                height: 420px;
 				width: 600px;
                     
 				 }
-			.legend {background: white;line-height: 1.5em}
+			.legend {background: none;line-height: 1.5em; color:darkgrey}
 			.legend i { width: 5em; float: left}
         </style>
         <style>
@@ -133,7 +133,7 @@ function getmescladoColor(NM_MICRO){
 
 
             /* Controle do mapa */
-            var map = L.map('map').setView([-22.0452, -42.6734], 7.8);
+            var map = L.map('map').setView([-22.50452, -42.6734], 7.4);
             mescladoLayer = L.geoJson(
                     mesclado,
                     {
@@ -141,7 +141,7 @@ function getmescladoColor(NM_MICRO){
                         onEachFeature: countriesOnEachFeature                    
                     }
             ).addTo(map);
-            map.fitBounds(mescladoLayer.getBounds());
+            
 
             /*Adiciona Basemap*/
             var Stadia_AlidadeSmoothDark = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
