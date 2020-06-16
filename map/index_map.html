@@ -206,7 +206,6 @@
             chartIt();
 
             async function chartIt() {
-
                 const data = await getData();
                 const ctx = document.getElementById('chart').getContext('2d');
                 const myChart = new Chart(ctx, {
@@ -214,13 +213,21 @@
                     data: {
                         labels: data.xs,
                         datasets: [{
-                            label: 'Casos Covid-19 Acumulados/Dia no Munício de Rio das Ostras',
+                            label: 'Casos Covid-19 Acumulados no Munício de Rio das Ostras',
                             data: data.ys,
-                            fill: true,
+                            fill: false,
                             backgroundColor: 'rgba(38, 147, 190, 0.1)',
                             borderColor: 'rgba(38, 147, 190, 1)',
                             borderWidth: 1,
+                        },
 
+                        {
+                            label: 'Óbitos Acumulados',
+                            data: data.zs,
+                            fill: false,
+                            borderColor: 'rgba(255, 0, 0, 0.6)',
+                            backgroundColor: 'rgba(255, 0, 0, 1)',
+                            borderWidth: 1
                         }
                         ]
 
@@ -240,9 +247,6 @@
                                         return value;
                                     }
 
-
-
-                                    //beginAtZero: true
                                 }
                             }],
 
@@ -257,15 +261,11 @@
             }
 
 
-            //Data from: https://data.giss.nasa.gov/gistemp/
-
-
-
             async function getData() {
 
                 const xs = [];
                 const ys = [];
-
+                const zs = [];
 
                 const response = await fetch('dados.csv');
                 const data = await response.text();
@@ -277,26 +277,25 @@
                     const year = columns[0];
                     xs.push(year);
                     const temp = columns[1];
-                    ys.push(parseFloat(temp) + 14);
-                    console.log(year, temp);
+                    ys.push(temp);
+                    zs.push(columns[2]);
+                    console.log(year, temp, zs);
                 });
-                return { xs, ys };
+                return { xs, ys, zs };
             }
 
 
         </script>
 
         <br>
-        <p style="font-size: smaller;"><span style="color: red;">*</span>Dados atualizados diariamente<br>
+        <p style="font-size: smaller;"><span style="color: rgb(38, 147, 190);">[</span>Dados atualizados
+            diariamente<span style="color: rgb(38, 147, 190);">]</span><br>
 
             <a style="color: rgb(38, 147, 190);" href="https://covid.saude.gov.br/"><b>Fonte</b></a>: Ministério da
             Saúde/Secretarias Estaduais e Municipais de Saúde.
-
         </p>
 
     </div>
-
-
     <footer>
         <p><b>@2020</b><br>
             <a style="color: rgb(38, 147, 190);" href="mailto:danielfbrg@gmail.com"><b>danielfbrg@gmail.com</b></a></p>
