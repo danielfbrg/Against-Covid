@@ -13,12 +13,34 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
 
     <style type="text/css">
+        
+       #groupMap {
+         justify-items: center;
+          align-items: center;
+          align-content: center;
+          display: flex;
+          flex-direction: column;
+                
+        }
+        
         #map {
 
             margin: auto;
             height: 420px;
             width: 600px;
 
+        }
+        #sect {
+           display: flex;
+            justify-items: auto;
+          align-items: auto;
+            
+        }
+          }
+    
+
+        #cases {
+        color: white;
         }
 
         .legend {
@@ -35,6 +57,8 @@
         .myDiv {
             background-color: rgb(37, 37, 37);
             text-align: center;
+            align-content: center;
+
         }
 
         .chart_set {
@@ -43,12 +67,15 @@
             margin: auto;
             height: 520px;
             width: 600px;
-        }
 
+        }
+       
+    
         footer {
-            text-align: right;
+            text-align: center;
             color: whitesmoke;
-            margin-top: 75px;
+            margin-top: 100px;
+            align-items: center;
         }
     </style>
 
@@ -56,251 +83,50 @@
 
 <body style="background-color:rgb(37, 37, 37);">
 
+    
     <div class="myDiv">
         <h1 style="color: white;">Casos Covid-19 - Estado do Rio de Janeiro</h1>
-        <h2 style="color: white;"> Municípios agrupados em Microrregiões:</h2>
-        <h3 style="color: whitesmoke;">Bacia de São João, Campos dos Goytacazes, Lagos e Macaé</h3>
-
-        <div id="map"></div>
+        
     </div>
 
-    <div>
-        <script>
-            var mescladoLayer;
+    <div id='sect'>
+        <div id="groupMap">
+            <h2 style="color: white;"> Municípios agrupados em Microrregiões:</h2>
+            <h3 style="color: whitesmoke;">Bacia de São João, Campos dos Goytacazes, Lagos e Macaé</h3>
+            <div id="map"></div>
+        </div>
 
+        <div id='cases'>
 
-            /*Função que Destaca o Polígono */
-            function highlightFeature(e) {
-                var layer = e.target;
-                layer.setStyle(
-                    {
-                        weight: 4,
-                        color: '#e6e0db',
-                        fillColor: 'white',
-                        fillOpacity: 0
-                    }
-                );
-                if (!L.Browser.ie && !L.Browser.opera) {
-                    layer.bringToFront();
-                }
-            }
-
-            /*Função Reseta HighLigth */
-            function resetHighlight(e) {
-                mescladoLayer.resetStyle(e.target);
-            }
-
-            /*Função Click gera Zoom para Municípo Clicado */
-            function zoomToFeature(e) {
-                map.fitBounds(e.target.getBounds());
-                var layer = e.target;
-
-
-                layer.setStyle(
-                    {
-                        weight: 4,
-                        color: '#e6e0db',
-                        fillColor: 'red',
-                        fillOpacity: 1
-                    }
-                );
-                if (!L.Browser.ie && !L.Browser.opera) {
-                    layer.bringToFront();
-                }
-            }
-
-            /*Função Interação com Munícipio */
-            function countriesOnEachFeature(feature, layer) {
-                //bindTooltip Comando referente ao label com mouseover
-                //NM_MUN é o Identificador da tabela de atribudos dos mapas referente ao nome do município
-                layer.bindTooltip(feature.properties.NM_MUN, { noHide: true });
-
-                layer.on(
-                    {
-                        mouseover: highlightFeature,
-                        mouseout: resetHighlight,
-                        click: zoomToFeature
-                    }
-                );
-            }
-
-            /*Função que Define cores das Camadas */
-            function mescladoStyle(feature) {
-                return {
-                    fillColor: getmescladoColor(feature.properties.NM_MICRO),
-                    weight: 2.2,
-                    opacity: 1,
-                    color: '#005AA8',
-                    dashArray: 3,
-                    fillOpacity: 0.7,
-                }
-            }
-
-            /*Função que Define Cores pelo tamanho da Área(podemos mudar para número de casos) 
-                Estou usando valores fornecidos pela Tabela de atributos(NM_MICRO), como usar da API ?
-            */
-            function getmescladoColor(NM_MICRO) {
-                if (NM_MICRO == 'Macaé') {
-                    return '#87cefa';
-                } else if (NM_MICRO == 'Lagos') {
-                    return 'blue';
-                } else if (NM_MICRO == 'Campos dos Goytacazes') {
-                    return '#c1c1c1';
-                } else if (NM_MICRO == 'Bacia de São João') {
-                    return '#43bc7e';
-                } else {
-                    return 'none';
-                }
-            }
-
-
-
-            /* Controle do mapa */
-            var map = L.map('map').setView([-22.50452, -42.6734], 7.4);
-            mescladoLayer = L.geoJson(
-                mesclado,
-                {
-                    style: mescladoStyle,
-                    onEachFeature: countriesOnEachFeature
-                }
-            ).addTo(map);
-
-
-            /*Adiciona Basemap*/
-            var Stadia_AlidadeSmoothDark = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
-                maxZoom: 20,
-                attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
-            });
-            map.addLayer(Stadia_AlidadeSmoothDark);
-
-            /* Controle da Legenda */
-            var legend = L.control({ position: 'bottomright' });
-            legend.onAdd = function (map) {
-                var div = L.DomUtil.create('div', 'legend')
-                var labels = [
-                    "Bacia de São João",
-                    "Campos dos Goytacazes",
-                    "Lagos",
-                    "Macaé"
-                ];
-                var grades = ['Bacia de São João', 'Campos dos Goytacazes', 'Lagos', 'Macaé'];
-                div.innerHTML = '<div><b>Microrregiões do Estado RJ</b></div>';
-                for (var i = 0; i < grades.length; i++) {
-                    div.innerHTML += '<i style="background:'
-                        + getmescladoColor(grades[i]) + '">&nbsp;&nbsp;</i>&nbsp;&nbsp;'
-                        + labels[i] + '<br />';
-                }
-                return div;
-            }
-            legend.addTo(map);
-
-        </script>
-    </div>
-
+        </div>
+    
     <div name="chart_test" class="chart_set">
-        <h3>Gráficos Casos Acumulados em Rio das Ostras</h3>
+        <h3 id="h3label"></h3>
         <canvas id="chart" width="950" height="850"></canvas>
 
-        <script>
-
-            chartIt();
-
-            async function chartIt() {
-                const data = await getData();
-                const ctx = document.getElementById('chart').getContext('2d');
-                const myChart = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: data.xs,
-                        datasets: [{
-                            label: 'Casos Covid-19 Acumulados no Munício de Rio das Ostras',
-                            data: data.ys,
-                            fill: false,
-                            backgroundColor: 'rgba(38, 147, 190, 0.1)',
-                            borderColor: 'rgba(38, 147, 190, 1)',
-                            borderWidth: 1,
-                        },
-
-                        {
-                            label: 'Óbitos Acumulados',
-                            data: data.zs,
-                            fill: false,
-                            borderColor: 'rgba(255, 0, 0, 0.6)',
-                            backgroundColor: 'rgba(255, 0, 0, 1)',
-                            borderWidth: 1
-                        }
-                        ]
-
-                    },
-                    options: {
-                        legend: {
-                            labels: {
-                                fontColor: "white"
-                            }
-                        },
-
-                        scales: {
-                            yAxes: [{
-                                ticks: {
-                                    fontColor: 'white',
-                                    callback: function (value, index, values) {
-                                        return value;
-                                    }
-
-                                }
-                            }],
-
-                            xAxes: [{
-                                ticks: {
-                                    fontColor: "white",
-                                }
-                            }]
-                        }
-                    }
-                });
-            }
-
-
-            async function getData() {
-
-                const xs = [];
-                const ys = [];
-                const zs = [];
-
-                const response = await fetch('dados.csv');
-                const data = await response.text();
-
-
-                const table = data.split('\n').slice(1);
-                table.forEach(row => {
-                    const columns = row.split(';');
-                    const year = columns[0];
-                    xs.push(year);
-                    const temp = columns[1];
-                    ys.push(temp);
-                    zs.push(columns[2]);
-                    console.log(year, temp, zs);
-                });
-                return { xs, ys, zs };
-            }
-
-
-        </script>
+      
 
         <br>
-        <p style="font-size: smaller;"><span style="color: rgb(38, 147, 190);">[</span>Dados atualizados
+       
+
+    </div>
+</div>
+    
+
+ <script src="../chart.js"></script>
+ 
+ <script src="../bundle.js"></script>
+
+</body>
+<footer>
+      
+             <p style="font-size: smaller;"><span style="color: rgb(38, 147, 190);">[</span>Dados atualizados
             diariamente<span style="color: rgb(38, 147, 190);">]</span><br>
 
             <a style="color: rgb(38, 147, 190);" href="https://covid.saude.gov.br/"><b>Fonte</b></a>: Ministério da
             Saúde/Secretarias Estaduais e Municipais de Saúde.
         </p>
-
-    </div>
-    <footer>
-        <p><b>@2020</b><br>
+          <p><b>@2020</b><br>
             <a style="color: rgb(38, 147, 190);" href="mailto:danielfbrg@gmail.com"><b>danielfbrg@gmail.com</b></a></p>
     </footer>
-
-</body>
-
 </html>
