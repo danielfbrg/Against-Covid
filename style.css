@@ -1,0 +1,42 @@
+#map {
+    margin: auto;
+    height: 420px;
+    width: 600px;
+  }
+  
+  .legend {
+    background: none;
+    line-height: 1.5em;
+    color: darkgrey;
+  }
+  
+  .legend i {
+    width: 5em;
+    float: left;
+  }
+  
+  .myDiv {
+    background-color: rgb(37, 37, 37);
+    text-align: center;
+    color: whitesmoke;
+  }
+  
+  body {
+    background-color: rgb(37, 37, 37);
+  }
+  
+  .p2 {
+    text-align: center;
+  }
+  
+  footer {
+    background-color: rgb(37, 37, 37);
+    text-align: right;
+    color: whitesmoke;
+    margin-top: 5px;
+  }
+  
+  .p1 {
+    font-size: 11px;
+  }
+  

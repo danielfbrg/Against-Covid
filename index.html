@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Map Covid-19</title>
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="./map/lib/leaflet/leaflet.css" />
+    <script src="./map/lib/leaflet/leaflet.js"></script>
+    <!-- Src GeoJSON -->
+    <script src="./map/data/separado.geojson"></script>
+
+    <link rel="stylesheet" href="style.css" />
+    
+    <style></style>
+  </head>
+
+  <body>
+    <div class="myDiv">
+      <h1>Casos Covid-19 | Estado do Rio de Janeiro</h1>
+      <h2>Municípios agrupados em Microrregiões:</h2>
+      <h3"> <b><span  style="color: #43bc7e">Bacia de São João</span>, <span  style="color: #c1c1c1">Campos dos Goytacazes</span>, <span  style="color: blue">Lagos</span> e <span  style="color: #87cefa">Macaé</span> </b></h3>
+      <p> <span  style="color: rgb(38, 147, 190)"><b>  </b> </span> <b> <span id="local_selecionado"></span> </b></p>  
+    </div>
+
+    <div id="map"></div>
+
+    <script src="script.js"></script>
+
+    <footer>
+      <p class="p2" style="font-size: smaller;">
+        <span style="color: rgb(38, 147, 190);">[</span>Dados atualizados
+        diariamente<span style="color: rgb(38, 147, 190);">]</span><br />
+
+        <a style="color: rgb(38, 147, 190);" href="https://covid.saude.gov.br/"
+          ><b>Fonte</b></a
+        >: Ministério da Saúde/Secretarias Estaduais e Municipais de Saúde.
+      </p>
+
+      <p class="p1">
+        <b>@2020</b>
+      </p>
+    </footer>
+  </body>
+</html>
