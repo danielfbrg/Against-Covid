@@ -27,7 +27,7 @@ Secretarias de Saúde das Unidades Federativas, dados tratados por Álvaro Juste
 
 <br>
 
-## [ Demo without chart*](https://danielfbrg.github.io/covidmap/)
+## [ Demo without chart*](https://danielfbrg.github.io/covidmap/ "Demo")
 
 ![](https://raw.githubusercontent.com/danielfbrg/Against-Covid/master/Screenshot.png)
 
