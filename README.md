@@ -39,16 +39,16 @@ Secretarias de Saúde das Unidades Federativas, dados tratados por Álvaro Juste
 
 
 
-#### [Daniel Ferraz](https://github.com/danielfbrg "github Daniel")  
+#### [Daniel Ferraz](https://github.com/danielfbrg "GitHub Daniel")  
 
 **E mail:**  danielfbrg@gmail.com
 
 
-#### [Eduardo Rodrigues](https://github.com/EduardoRSSR "github Eduardo")  
+#### [Eduardo Rodrigues](https://github.com/EduardoRSSR "GitHub Eduardo")  
 
 **E mail:** eduardorodriguesiff@gmail.com
 
 
-#### [Lucas Bayout](https://github.com/mendesbayout "github Lucas")
+#### [Lucas Bayout](https://github.com/mendesbayout "GitHub Lucas")
 
 **E mail:** xxxxx@gmail.com
