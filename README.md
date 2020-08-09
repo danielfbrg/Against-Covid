@@ -27,6 +27,10 @@ Secretarias de Saúde das Unidades Federativas, dados tratados por Álvaro Juste
 
 <br>
 
+[**Demo without chart**](https://danielfbrg.github.io/cbers04/)
+
+<br>
+
 ### Developed by:
 
 <br>
